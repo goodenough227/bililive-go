@@ -145,6 +145,13 @@ func addLives(writer http.ResponseWriter, r *http.Request) {
 	gjson.ParseBytes(b).ForEach(func(key, value gjson.Result) bool {
 		isListen := value.Get("listen").Bool()
 		urlStr := strings.Trim(value.Get("url").String(), " ")
+		urlStr, err = convertShortToLiveUrl(urlStr)
+		if err != nil {
+			msg := urlStr + ": " + err.Error()
+			inst.Logger.Error(msg)
+			errorMessages = append(errorMessages, msg)
+			return true
+		}
 		if retInfo, err := addLiveImpl(r.Context(), urlStr, isListen); err != nil {
 			msg := urlStr + ": " + err.Error()
 			inst.Logger.Error(msg)

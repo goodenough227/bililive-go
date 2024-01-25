@@ -146,6 +146,7 @@ func addLives(writer http.ResponseWriter, r *http.Request) {
 		isListen := value.Get("listen").Bool()
 		urlStr := strings.Trim(value.Get("url").String(), " ")
 		urlStr, err = convertShortToLiveUrl(urlStr)
+		urlStr = strings.TrimSpace(urlStr)
 		if err != nil {
 			msg := urlStr + ": " + err.Error()
 			inst.Logger.Error(msg)
